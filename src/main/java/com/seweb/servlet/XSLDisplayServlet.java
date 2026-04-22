@@ -5,7 +5,6 @@ import com.seweb.util.XMLUtil;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 public class XSLDisplayServlet extends HttpServlet {
@@ -36,31 +35,15 @@ public class XSLDisplayServlet extends HttpServlet {
                 return;
             }
 
-            // Build user selector HTML snippet and embed into the XSL output
-            String htmlOutput = XMLUtil.transformWithXSL(
+            String tableHtml = XMLUtil.transformWithXSL(
                     recipesPath, xslPath,
                     selectedUser.getCookingSkillLevel(),
                     selectedUser.getFullName());
 
-            // Inject user selector before closing </body>
-            StringBuilder selector = new StringBuilder();
-            selector.append("<div class='container mb-4'>");
-            selector.append("<form method='get' action='/xsl-display' class='row g-2 align-items-center'>");
-            selector.append("<div class='col-auto'><label class='col-form-label fw-semibold'>Switch User:</label></div>");
-            selector.append("<div class='col-auto'><select name='userId' class='form-select' onchange='this.form.submit()'>");
-            for (User u : users) {
-                selector.append("<option value='").append(u.getId()).append("'");
-                if (u.getId().equals(selectedUser.getId())) selector.append(" selected");
-                selector.append(">").append(u.getFullName())
-                        .append(" (").append(u.getCookingSkillLevel()).append(")</option>");
-            }
-            selector.append("</select></div></form></div>");
-
-            htmlOutput = htmlOutput.replace("</body>", selector + "</body>");
-
-            resp.setContentType("text/html;charset=UTF-8");
-            PrintWriter writer = resp.getWriter();
-            writer.write(htmlOutput);
+            req.setAttribute("tableHtml", tableHtml);
+            req.setAttribute("users", users);
+            req.setAttribute("selectedUser", selectedUser);
+            req.getRequestDispatcher("/WEB-INF/jsp/xslDisplay.jsp").forward(req, resp);
         } catch (Exception e) {
             req.setAttribute("error", "XSL transform failed: " + e.getMessage());
             req.getRequestDispatcher("/WEB-INF/jsp/error.jsp").forward(req, resp);

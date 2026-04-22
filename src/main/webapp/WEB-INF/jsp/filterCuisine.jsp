@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String[] cuisines = {"Italian","Mediterranean","Asian","Japanese","Chinese","Thai",
+        "Indian","Mexican","American","French","European","Western","Greek","Spanish","British","Middle Eastern"};
+    request.setAttribute("cuisines", cuisines);
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,8 +41,8 @@
                     <label class="form-label fw-semibold">Select a Cuisine Type</label>
                     <select name="cuisine" class="form-select form-select-lg" required>
                         <option value="">-- Choose cuisine --</option>
-                        <c:forEach var="c" items="${['Italian','Mediterranean','Asian','Japanese','Chinese','Thai','Indian','Mexican','American','French','European','Western','Greek','Spanish','British','Middle Eastern']}">
-                            <option value="${c}" ${selectedCuisine == c ? 'selected' : ''}>${c}</option>
+                        <c:forEach var="c" items="${cuisines}">
+                            <option value="${c}" <c:if test="${selectedCuisine == c}">selected</c:if>>${c}</option>
                         </c:forEach>
                     </select>
                 </div>

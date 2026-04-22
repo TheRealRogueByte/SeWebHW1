@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String[] cuisines = {"Italian","Mediterranean","Asian","Japanese","Chinese","Thai",
+        "Indian","Mexican","American","French","European","Western","Greek","Spanish","British","Middle Eastern"};
+    request.setAttribute("cuisines", cuisines);
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,17 +63,17 @@
                             <label for="skill" class="form-label fw-semibold">Cooking Skill Level <span class="text-danger">*</span></label>
                             <select class="form-select" id="skill" name="cookingSkillLevel" required>
                                 <option value="">-- Select skill level --</option>
-                                <option value="Beginner" ${cookingSkillLevel == 'Beginner' ? 'selected' : ''}>Beginner</option>
-                                <option value="Intermediate" ${cookingSkillLevel == 'Intermediate' ? 'selected' : ''}>Intermediate</option>
-                                <option value="Advanced" ${cookingSkillLevel == 'Advanced' ? 'selected' : ''}>Advanced</option>
+                                <option value="Beginner" <c:if test="${cookingSkillLevel == 'Beginner'}">selected</c:if>>Beginner</option>
+                                <option value="Intermediate" <c:if test="${cookingSkillLevel == 'Intermediate'}">selected</c:if>>Intermediate</option>
+                                <option value="Advanced" <c:if test="${cookingSkillLevel == 'Advanced'}">selected</c:if>>Advanced</option>
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="cuisine" class="form-label fw-semibold">Preferred Cuisine Type <span class="text-danger">*</span></label>
                             <select class="form-select" id="cuisine" name="preferredCuisineType" required>
                                 <option value="">-- Select cuisine --</option>
-                                <c:forEach var="c" items="${['Italian','Mediterranean','Asian','Japanese','Chinese','Thai','Indian','Mexican','American','French','European','Western','Greek','Spanish','British','Middle Eastern']}">
-                                    <option value="${c}" ${preferredCuisineType == c ? 'selected' : ''}>${c}</option>
+                                <c:forEach var="c" items="${cuisines}">
+                                    <option value="${c}" <c:if test="${preferredCuisineType == c}">selected</c:if>>${c}</option>
                                 </c:forEach>
                             </select>
                         </div>

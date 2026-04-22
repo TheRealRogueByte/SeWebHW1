@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    String[] cuisines = {"Italian","Mediterranean","Asian","Japanese","Chinese","Thai",
+        "Indian","Mexican","American","French","European","Western","Greek","Spanish","British","Middle Eastern"};
+    request.setAttribute("cuisines", cuisines);
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,8 +58,8 @@
                                 <label for="ct1" class="form-label fw-semibold">Cuisine Type 1 <span class="text-danger">*</span></label>
                                 <select class="form-select" id="ct1" name="cuisineType1" required>
                                     <option value="">-- Select --</option>
-                                    <c:forEach var="c" items="${['Italian','Mediterranean','Asian','Japanese','Chinese','Thai','Indian','Mexican','American','French','European','Western','Greek','Spanish','British','Middle Eastern']}">
-                                        <option value="${c}" ${cuisineType1 == c ? 'selected' : ''}>${c}</option>
+                                    <c:forEach var="c" items="${cuisines}">
+                                        <option value="${c}" <c:if test="${cuisineType1 == c}">selected</c:if>>${c}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -62,8 +67,8 @@
                                 <label for="ct2" class="form-label fw-semibold">Cuisine Type 2 <span class="text-danger">*</span></label>
                                 <select class="form-select" id="ct2" name="cuisineType2" required>
                                     <option value="">-- Select --</option>
-                                    <c:forEach var="c" items="${['Italian','Mediterranean','Asian','Japanese','Chinese','Thai','Indian','Mexican','American','French','European','Western','Greek','Spanish','British','Middle Eastern']}">
-                                        <option value="${c}" ${cuisineType2 == c ? 'selected' : ''}>${c}</option>
+                                    <c:forEach var="c" items="${cuisines}">
+                                        <option value="${c}" <c:if test="${cuisineType2 == c}">selected</c:if>>${c}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -72,15 +77,15 @@
                             <label class="form-label fw-semibold">Difficulty Level <span class="text-danger">*</span></label>
                             <div class="d-flex gap-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="difficultyLevel" id="beginner" value="Beginner" ${difficultyLevel == 'Beginner' ? 'checked' : ''} required>
+                                    <input class="form-check-input" type="radio" name="difficultyLevel" id="beginner" value="Beginner" <c:if test="${difficultyLevel == 'Beginner'}">checked</c:if> required>
                                     <label class="form-check-label" for="beginner"><span class="badge bg-success">Beginner</span></label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="difficultyLevel" id="intermediate" value="Intermediate" ${difficultyLevel == 'Intermediate' ? 'checked' : ''}>
+                                    <input class="form-check-input" type="radio" name="difficultyLevel" id="intermediate" value="Intermediate" <c:if test="${difficultyLevel == 'Intermediate'}">checked</c:if>>
                                     <label class="form-check-label" for="intermediate"><span class="badge bg-warning text-dark">Intermediate</span></label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="difficultyLevel" id="advanced" value="Advanced" ${difficultyLevel == 'Advanced' ? 'checked' : ''}>
+                                    <input class="form-check-input" type="radio" name="difficultyLevel" id="advanced" value="Advanced" <c:if test="${difficultyLevel == 'Advanced'}">checked</c:if>>
                                     <label class="form-check-label" for="advanced"><span class="badge bg-danger">Advanced</span></label>
                                 </div>
                             </div>
