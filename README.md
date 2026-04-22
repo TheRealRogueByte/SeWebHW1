@@ -55,7 +55,7 @@ A Java web application (Servlet + JSP) for recommending recipes to users based o
 ```bash
 mvn tomcat7:run
 ```
-Open browser at: `http://localhost:8080`
+Open browser at: `http://localhost:8090`
 
 ### Option 2: Deploy WAR to Tomcat
 ```bash
