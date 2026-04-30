@@ -11,91 +11,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filter by Cuisine - Recipe Recommender</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/steam.css">
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/"><i class="bi bi-egg-fried me-2"></i>Recipe Recommender</a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/recipes">All Recipes</a>
-            <a class="nav-link" href="/add-recipe">Add Recipe</a>
-            <a class="nav-link" href="/add-user">Add User</a>
-            <a class="nav-link" href="/recommend-skill">Recommend</a>
-            <a class="nav-link active" href="/filter-cuisine">By Cuisine</a>
-            <a class="nav-link" href="/xsl-display">XSL View</a>
-        </div>
+<body>
+
+<nav class="st-nav">
+    <div class="st-nav-inner">
+        <a class="st-brand" href="/"><span>&#9673;</span> Recipe Recommender</a>
+        <ul class="st-nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recipes">Recipes</a></li>
+            <li><a href="/add-recipe">Add Recipe</a></li>
+            <li><a href="/add-user">Add User</a></li>
+            <li><a href="/recommend-skill">Recommend</a></li>
+            <li><a href="/filter-cuisine" class="active">By Cuisine</a></li>
+            <li><a href="/xsl-display">XSL View</a></li>
+            <li><a href="/scrape">Scrape</a></li>
+        </ul>
     </div>
 </nav>
 
-<div class="container my-4">
-    <h2 class="mb-1"><i class="bi bi-filter-circle me-2"></i>Filter Recipes by Cuisine</h2>
-    <p class="text-muted mb-4">Uses XPath: <code>//recipe[cuisineTypes/cuisineType='...']</code></p>
+<div class="st-wrap">
 
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form action="/filter-cuisine" method="get" class="row g-3 align-items-end">
-                <div class="col-md-5">
-                    <label class="form-label fw-semibold">Select a Cuisine Type</label>
-                    <select name="cuisine" class="form-select form-select-lg" required>
-                        <option value="">-- Choose cuisine --</option>
-                        <c:forEach var="c" items="${cuisines}">
-                            <option value="${c}" <c:if test="${selectedCuisine == c}">selected</c:if>>${c}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <i class="bi bi-search me-2"></i>Search
-                    </button>
-                </div>
-                <c:if test="${not empty selectedCuisine}">
-                    <div class="col-auto">
-                        <a href="/filter-cuisine" class="btn btn-outline-secondary btn-lg">Clear</a>
+    <div class="st-page-title">
+        <h2>Filter Recipes by Cuisine</h2>
+    </div>
+    <p class="st-subtitle">Uses XPath: <code>//recipe[cuisineTypes/cuisineType='...']</code></p>
+
+    <div class="st-card" style="margin-bottom:16px;">
+        <div class="st-card-header">Search Filter</div>
+        <div class="st-card-body">
+            <form action="/filter-cuisine" method="get">
+                <div style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:200px;">
+                        <label class="st-form-label">Select a Cuisine Type</label>
+                        <select name="cuisine" class="st-form-control" required>
+                            <option value="">-- Choose cuisine --</option>
+                            <c:forEach var="c" items="${cuisines}">
+                                <option value="${c}" <c:if test="${selectedCuisine == c}">selected</c:if>>${c}</option>
+                            </c:forEach>
+                        </select>
                     </div>
-                </c:if>
+                    <div>
+                        <button type="submit" class="st-btn st-btn-blue">Search</button>
+                    </div>
+                    <c:if test="${not empty selectedCuisine}">
+                        <div>
+                            <a href="/filter-cuisine" class="st-btn st-btn-grey">Clear</a>
+                        </div>
+                    </c:if>
+                </div>
             </form>
         </div>
     </div>
 
     <c:if test="${not empty error}">
-        <div class="alert alert-danger">${error}</div>
+        <div class="st-alert st-alert-danger">${error}</div>
     </c:if>
 
     <c:if test="${not empty recipes}">
-        <h4 class="mb-3">
-            <i class="bi bi-tag me-2"></i>${selectedCuisine} Recipes
-            <span class="badge bg-secondary ms-2">${recipes.size()}</span>
-        </h4>
-        <div class="row g-3">
+        <div class="st-section-header" style="margin-bottom:2px;">
+            ${selectedCuisine} Recipes
+            <span class="st-tag">${recipes.size()}</span>
+        </div>
+        <div class="st-recipe-grid" style="margin-top:2px;">
             <c:forEach var="recipe" items="${recipes}">
-                <div class="col-md-4">
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body">
-                            <h5 class="card-title">${recipe.title}</h5>
-                            <p class="mb-1">
-                                <span class="badge bg-secondary">${recipe.cuisineType1}</span>
-                                <span class="badge bg-secondary">${recipe.cuisineType2}</span>
-                            </p>
-                            <c:choose>
-                                <c:when test="${recipe.difficultyLevel == 'Beginner'}">
-                                    <span class="badge bg-success">${recipe.difficultyLevel}</span>
-                                </c:when>
-                                <c:when test="${recipe.difficultyLevel == 'Intermediate'}">
-                                    <span class="badge bg-warning text-dark">${recipe.difficultyLevel}</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span class="badge bg-danger">${recipe.difficultyLevel}</span>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                        <div class="card-footer bg-transparent">
-                            <a href="/recipe-detail?id=${recipe.id}" class="btn btn-sm btn-outline-primary w-100">
-                                <i class="bi bi-eye me-1"></i>View Details
-                            </a>
-                        </div>
+                <div class="st-recipe-card">
+                    <h5>${recipe.title}</h5>
+                    <div class="tags">
+                        <span class="st-tag">${recipe.cuisineType1}</span>
+                        <span class="st-tag">${recipe.cuisineType2}</span>
+                        <c:choose>
+                            <c:when test="${recipe.difficultyLevel == 'Beginner'}">
+                                <span class="st-tag st-tag-green">${recipe.difficultyLevel}</span>
+                            </c:when>
+                            <c:when test="${recipe.difficultyLevel == 'Intermediate'}">
+                                <span class="st-tag st-tag-yellow">${recipe.difficultyLevel}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="st-tag st-tag-red">${recipe.difficultyLevel}</span>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <div class="footer-row">
+                        <a href="/recipe-detail?id=${recipe.id}" class="st-btn st-btn-blue st-btn-sm st-btn-full">View Details</a>
                     </div>
                 </div>
             </c:forEach>
@@ -103,9 +102,14 @@
     </c:if>
 
     <c:if test="${not empty selectedCuisine and empty recipes}">
-        <div class="alert alert-info"><i class="bi bi-info-circle me-2"></i>No recipes found for cuisine: <strong>${selectedCuisine}</strong></div>
+        <div class="st-alert st-alert-info">No recipes found for cuisine: <strong>${selectedCuisine}</strong></div>
     </c:if>
+
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="st-footer">
+    Recipe Recommender &mdash; Semantic Web Project &bull; XML &bull; XPath &bull; XSL &bull; Java Servlets
+</div>
+
 </body>
 </html>

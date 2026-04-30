@@ -6,6 +6,14 @@
 
     <display-name>Recipe Recommender</display-name>
 
+    <!-- Re-expose Tomcat's built-in default servlet for static resources.
+         Without this, the HomeServlet mapped to "/" swallows all unmatched
+         URLs including /css/steam.css. -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/css/*</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>com.seweb.servlet.HomeServlet</servlet-class>

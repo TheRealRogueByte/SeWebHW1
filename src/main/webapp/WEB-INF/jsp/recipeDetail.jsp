@@ -6,82 +6,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${recipe.title} - Recipe Recommender</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/steam.css">
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/"><i class="bi bi-egg-fried me-2"></i>Recipe Recommender</a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/recipes">All Recipes</a>
-            <a class="nav-link" href="/add-recipe">Add Recipe</a>
-            <a class="nav-link" href="/add-user">Add User</a>
-            <a class="nav-link" href="/recommend-skill">Recommend</a>
-            <a class="nav-link" href="/filter-cuisine">By Cuisine</a>
-            <a class="nav-link" href="/xsl-display">XSL View</a>
-        </div>
+<body>
+
+<nav class="st-nav">
+    <div class="st-nav-inner">
+        <a class="st-brand" href="/"><span>&#9673;</span> Recipe Recommender</a>
+        <ul class="st-nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recipes" class="active">Recipes</a></li>
+            <li><a href="/add-recipe">Add Recipe</a></li>
+            <li><a href="/add-user">Add User</a></li>
+            <li><a href="/recommend-skill">Recommend</a></li>
+            <li><a href="/filter-cuisine">By Cuisine</a></li>
+            <li><a href="/xsl-display">XSL View</a></li>
+            <li><a href="/scrape">Scrape</a></li>
+        </ul>
     </div>
 </nav>
 
-<div class="container my-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item"><a href="/recipes">Recipes</a></li>
-            <li class="breadcrumb-item active">${recipe.title}</li>
-        </ol>
-    </nav>
+<div class="st-wrap">
+    <div style="max-width:600px; margin:0 auto;">
 
-    <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow border-0">
-                <div class="card-header bg-dark text-white py-3">
-                    <h3 class="mb-0"><i class="bi bi-book me-2"></i>${recipe.title}</h3>
-                </div>
-                <div class="card-body p-4">
-                    <p class="text-muted mb-1">Retrieved via XPath: <code>//recipe[@id='${recipe.id}']</code></p>
-                    <hr>
-                    <dl class="row fs-5">
-                        <dt class="col-sm-4 text-muted">Recipe ID</dt>
-                        <dd class="col-sm-8">#${recipe.id}</dd>
+        <div class="st-breadcrumb">
+            <a href="/">Home</a>
+            <span class="sep">&rsaquo;</span>
+            <a href="/recipes">Recipes</a>
+            <span class="sep">&rsaquo;</span>
+            <span>${recipe.title}</span>
+        </div>
 
-                        <dt class="col-sm-4 text-muted">Title</dt>
-                        <dd class="col-sm-8"><strong>${recipe.title}</strong></dd>
-
-                        <dt class="col-sm-4 text-muted">Cuisine Type 1</dt>
-                        <dd class="col-sm-8"><span class="badge bg-secondary fs-6">${recipe.cuisineType1}</span></dd>
-
-                        <dt class="col-sm-4 text-muted">Cuisine Type 2</dt>
-                        <dd class="col-sm-8"><span class="badge bg-secondary fs-6">${recipe.cuisineType2}</span></dd>
-
-                        <dt class="col-sm-4 text-muted">Difficulty Level</dt>
-                        <dd class="col-sm-8">
+        <div class="st-card">
+            <div class="st-card-header">${recipe.title}</div>
+            <div class="st-card-body" style="padding:0;">
+                <p style="padding:10px 14px 6px; font-size:11px; color:#8f98a0; margin:0;">
+                    Retrieved via XPath: <code>//recipe[@id='${recipe.id}']</code>
+                </p>
+                <hr style="margin:0;">
+                <table class="st-info-table">
+                    <tr>
+                        <td class="info-label">Recipe ID</td>
+                        <td class="info-val">#${recipe.id}</td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">Title</td>
+                        <td class="info-val"><strong>${recipe.title}</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">Cuisine Type 1</td>
+                        <td class="info-val"><span class="st-tag">${recipe.cuisineType1}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">Cuisine Type 2</td>
+                        <td class="info-val"><span class="st-tag">${recipe.cuisineType2}</span></td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">Difficulty Level</td>
+                        <td class="info-val">
                             <c:choose>
                                 <c:when test="${recipe.difficultyLevel == 'Beginner'}">
-                                    <span class="badge bg-success fs-6">${recipe.difficultyLevel}</span>
+                                    <span class="st-tag st-tag-green">${recipe.difficultyLevel}</span>
                                 </c:when>
                                 <c:when test="${recipe.difficultyLevel == 'Intermediate'}">
-                                    <span class="badge bg-warning text-dark fs-6">${recipe.difficultyLevel}</span>
+                                    <span class="st-tag st-tag-yellow">${recipe.difficultyLevel}</span>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class="badge bg-danger fs-6">${recipe.difficultyLevel}</span>
+                                    <span class="st-tag st-tag-red">${recipe.difficultyLevel}</span>
                                 </c:otherwise>
                             </c:choose>
-                        </dd>
-                    </dl>
-                </div>
-                <div class="card-footer bg-transparent d-flex gap-2">
-                    <a href="/recipes" class="btn btn-outline-dark"><i class="bi bi-arrow-left me-1"></i>Back to List</a>
-                    <a href="/filter-cuisine?cuisine=${recipe.cuisineType1}" class="btn btn-outline-secondary">
-                        More ${recipe.cuisineType1} recipes
-                    </a>
-                </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="st-card-footer">
+                <a href="/recipes" class="st-btn st-btn-grey st-btn-sm">&laquo; Back to List</a>
+                <a href="/filter-cuisine?cuisine=${recipe.cuisineType1}" class="st-btn st-btn-blue st-btn-sm">
+                    More ${recipe.cuisineType1} recipes
+                </a>
             </div>
         </div>
+
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="st-footer">
+    Recipe Recommender &mdash; Semantic Web Project &bull; XML &bull; XPath &bull; XSL &bull; Java Servlets
+</div>
+
 </body>
 </html>

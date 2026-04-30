@@ -6,60 +6,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>XSL View - Recipe Recommender</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/steam.css">
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/"><i class="bi bi-egg-fried me-2"></i>Recipe Recommender</a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/recipes">All Recipes</a>
-            <a class="nav-link" href="/add-recipe">Add Recipe</a>
-            <a class="nav-link" href="/add-user">Add User</a>
-            <a class="nav-link" href="/recommend-skill">Recommend</a>
-            <a class="nav-link" href="/filter-cuisine">By Cuisine</a>
-            <a class="nav-link active" href="/xsl-display">XSL View</a>
-        </div>
+<body>
+
+<nav class="st-nav">
+    <div class="st-nav-inner">
+        <a class="st-brand" href="/"><span>&#9673;</span> Recipe Recommender</a>
+        <ul class="st-nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recipes">Recipes</a></li>
+            <li><a href="/add-recipe">Add Recipe</a></li>
+            <li><a href="/add-user">Add User</a></li>
+            <li><a href="/recommend-skill">Recommend</a></li>
+            <li><a href="/filter-cuisine">By Cuisine</a></li>
+            <li><a href="/xsl-display" class="active">XSL View</a></li>
+            <li><a href="/scrape">Scrape</a></li>
+        </ul>
     </div>
 </nav>
 
-<div class="container my-4">
-    <h2 class="mb-1"><i class="bi bi-file-earmark-code me-2"></i>Recipes — XSL Styled View</h2>
-    <p class="text-muted mb-3">Recipes are read into memory then displayed via XSLT transformation.</p>
+<div class="st-wrap">
 
-    <%-- User selector --%>
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form method="get" action="/xsl-display" class="row g-3 align-items-end">
-                <div class="col-md-5">
-                    <label class="form-label fw-semibold">Select User</label>
-                    <select name="userId" class="form-select" onchange="this.form.submit()">
+    <div class="st-page-title">
+        <h2>Recipes &mdash; XSL Styled View</h2>
+    </div>
+    <p class="st-subtitle">Recipes are read into memory then displayed via XSLT transformation.</p>
+
+    <div class="st-card" style="margin-bottom:14px;">
+        <div class="st-card-header">Select User Profile</div>
+        <div class="st-card-body">
+            <form method="get" action="/xsl-display" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;">
+                <div style="flex:1; min-width:220px;">
+                    <label class="st-form-label">Active User</label>
+                    <select name="userId" class="st-form-control" onchange="this.form.submit()">
                         <c:forEach var="u" items="${users}">
-                            <option value="${u.id}"
-                                <c:if test="${u.id == selectedUser.id}">selected</c:if>>
-                                ${u.name} ${u.surname} — ${u.cookingSkillLevel} / ${u.preferredCuisineType}
+                            <option value="${u.id}" <c:if test="${u.id == selectedUser.id}">selected</c:if>>
+                                ${u.name} ${u.surname} &mdash; ${u.cookingSkillLevel} / ${u.preferredCuisineType}
                             </option>
                         </c:forEach>
                     </select>
                 </div>
-
             </form>
         </div>
     </div>
 
-    <%-- Legend --%>
-    <div class="mb-3 d-flex gap-4">
-        <span><span style="display:inline-block;width:18px;height:18px;background:#FFD700;border:1px solid #ccc;vertical-align:middle;margin-right:5px;"></span>Matches <strong>${selectedUser.cookingSkillLevel}</strong> skill level</span>
-        <span><span style="display:inline-block;width:18px;height:18px;background:#90EE90;border:1px solid #ccc;vertical-align:middle;margin-right:5px;"></span>Other difficulty level</span>
+    <div class="st-legend">
+        <div class="st-legend-item">
+            <div class="st-legend-swatch" style="background:#2e2200; border-color:#5e4000;"></div>
+            <span>Matches <strong style="color:#f5c518;">${selectedUser.cookingSkillLevel}</strong> skill level</span>
+        </div>
+        <div class="st-legend-item">
+            <div class="st-legend-swatch" style="background:#0e1f0e; border-color:#1a3a1a;"></div>
+            <span>Other difficulty level</span>
+        </div>
     </div>
 
-    <%-- XSL-transformed table --%>
-    <div class="table-responsive shadow-sm rounded bg-white">
-        ${tableHtml}
+    <div class="st-table-wrap xsl-output">
+        <c:out value="${tableHtml}" escapeXml="false"/>
     </div>
+
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="st-footer">
+    Recipe Recommender &mdash; Semantic Web Project &bull; XML &bull; XPath &bull; XSL &bull; Java Servlets
+</div>
+
 </body>
 </html>

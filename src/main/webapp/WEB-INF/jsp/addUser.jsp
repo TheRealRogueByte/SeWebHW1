@@ -11,82 +11,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add User - Recipe Recommender</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/steam.css">
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/"><i class="bi bi-egg-fried me-2"></i>Recipe Recommender</a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/recipes">All Recipes</a>
-            <a class="nav-link" href="/add-recipe">Add Recipe</a>
-            <a class="nav-link active" href="/add-user">Add User</a>
-            <a class="nav-link" href="/recommend-skill">Recommend</a>
-            <a class="nav-link" href="/filter-cuisine">By Cuisine</a>
-            <a class="nav-link" href="/xsl-display">XSL View</a>
-        </div>
+<body>
+
+<nav class="st-nav">
+    <div class="st-nav-inner">
+        <a class="st-brand" href="/"><span>&#9673;</span> Recipe Recommender</a>
+        <ul class="st-nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recipes">Recipes</a></li>
+            <li><a href="/add-recipe">Add Recipe</a></li>
+            <li><a href="/add-user" class="active">Add User</a></li>
+            <li><a href="/recommend-skill">Recommend</a></li>
+            <li><a href="/filter-cuisine">By Cuisine</a></li>
+            <li><a href="/xsl-display">XSL View</a></li>
+            <li><a href="/scrape">Scrape</a></li>
+        </ul>
     </div>
 </nav>
 
-<div class="container my-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-header bg-info text-white">
-                    <h4 class="mb-0"><i class="bi bi-person-plus me-2"></i>Add New User</h4>
-                </div>
-                <div class="card-body p-4">
+<div class="st-wrap">
+    <div style="max-width:500px; margin:0 auto;">
 
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>${error}</div>
-                    </c:if>
-                    <c:if test="${not empty success}">
-                        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>${success}</div>
-                    </c:if>
+        <div class="st-page-title">
+            <h2>Add New User</h2>
+        </div>
 
-                    <form action="/add-user" method="post">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="name" class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="name" name="name"
-                                       value="${not empty name ? name : ''}" placeholder="e.g. Jane" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="surname" class="form-label fw-semibold">Surname <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="surname" name="surname"
-                                       value="${not empty surname ? surname : ''}" placeholder="e.g. Smith" required>
-                            </div>
+        <c:if test="${not empty error}">
+            <div class="st-alert st-alert-danger">${error}</div>
+        </c:if>
+        <c:if test="${not empty success}">
+            <div class="st-alert st-alert-success">${success}</div>
+        </c:if>
+
+        <div class="st-card">
+            <div class="st-card-header">User Profile</div>
+            <div class="st-card-body">
+
+                <form action="/add-user" method="post">
+
+                    <div class="st-form-row">
+                        <div class="st-form-group">
+                            <label class="st-form-label" for="name">First Name <span class="st-req">*</span></label>
+                            <input type="text" class="st-form-control" id="name" name="name"
+                                   value="${not empty name ? name : ''}" placeholder="e.g. Jane" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="skill" class="form-label fw-semibold">Cooking Skill Level <span class="text-danger">*</span></label>
-                            <select class="form-select" id="skill" name="cookingSkillLevel" required>
-                                <option value="">-- Select skill level --</option>
-                                <option value="Beginner" <c:if test="${cookingSkillLevel == 'Beginner'}">selected</c:if>>Beginner</option>
-                                <option value="Intermediate" <c:if test="${cookingSkillLevel == 'Intermediate'}">selected</c:if>>Intermediate</option>
-                                <option value="Advanced" <c:if test="${cookingSkillLevel == 'Advanced'}">selected</c:if>>Advanced</option>
-                            </select>
+                        <div class="st-form-group">
+                            <label class="st-form-label" for="surname">Surname <span class="st-req">*</span></label>
+                            <input type="text" class="st-form-control" id="surname" name="surname"
+                                   value="${not empty surname ? surname : ''}" placeholder="e.g. Smith" required>
                         </div>
-                        <div class="mb-4">
-                            <label for="cuisine" class="form-label fw-semibold">Preferred Cuisine Type <span class="text-danger">*</span></label>
-                            <select class="form-select" id="cuisine" name="preferredCuisineType" required>
-                                <option value="">-- Select cuisine --</option>
-                                <c:forEach var="c" items="${cuisines}">
-                                    <option value="${c}" <c:if test="${preferredCuisineType == c}">selected</c:if>>${c}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-info text-white"><i class="bi bi-save me-2"></i>Save User</button>
-                            <a href="/" class="btn btn-outline-secondary">Cancel</a>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <div class="st-form-group">
+                        <label class="st-form-label" for="skill">Cooking Skill Level <span class="st-req">*</span></label>
+                        <select class="st-form-control" id="skill" name="cookingSkillLevel" required>
+                            <option value="">-- Select skill level --</option>
+                            <option value="Beginner"     <c:if test="${cookingSkillLevel == 'Beginner'}">selected</c:if>>Beginner</option>
+                            <option value="Intermediate" <c:if test="${cookingSkillLevel == 'Intermediate'}">selected</c:if>>Intermediate</option>
+                            <option value="Advanced"     <c:if test="${cookingSkillLevel == 'Advanced'}">selected</c:if>>Advanced</option>
+                        </select>
+                    </div>
+
+                    <div class="st-form-group">
+                        <label class="st-form-label" for="cuisine">Preferred Cuisine Type <span class="st-req">*</span></label>
+                        <select class="st-form-control" id="cuisine" name="preferredCuisineType" required>
+                            <option value="">-- Select cuisine --</option>
+                            <c:forEach var="c" items="${cuisines}">
+                                <option value="${c}" <c:if test="${preferredCuisineType == c}">selected</c:if>>${c}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <div class="st-card-footer" style="margin: 0 -14px -16px; padding:12px 14px;">
+                        <button type="submit" class="st-btn st-btn-green">Save User</button>
+                        <a href="/" class="st-btn st-btn-grey">Cancel</a>
+                    </div>
+
+                </form>
             </div>
         </div>
+
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="st-footer">
+    Recipe Recommender &mdash; Semantic Web Project &bull; XML &bull; XPath &bull; XSL &bull; Java Servlets
+</div>
+
 </body>
 </html>

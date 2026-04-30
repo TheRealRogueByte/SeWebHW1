@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <users>
-        
+            
+    
     <user id="1">
-                
+                        
+        
         <name>John</name>
-                
+                        
+        
         <surname>Doe</surname>
-                
+                        
+        
         <cookingSkillLevel>Intermediate</cookingSkillLevel>
-                
+                        
+        
         <preferredCuisineType>Italian</preferredCuisineType>
+                    
+    
+    </user>
+        
+    
+    <user id="2">
+                
+        <name>Test</name>
+                
+        <surname>Test</surname>
+                
+        <cookingSkillLevel>Advanced</cookingSkillLevel>
+                
+        <preferredCuisineType>European</preferredCuisineType>
             
     </user>
     
-    <user id="2">
-        <name>Test</name>
-        <surname>Test</surname>
+    <user id="3">
+        <name>Test2</name>
+        <surname>Test2</surname>
         <cookingSkillLevel>Advanced</cookingSkillLevel>
-        <preferredCuisineType>European</preferredCuisineType>
+        <preferredCuisineType>Middle Eastern</preferredCuisineType>
     </user>
 </users>

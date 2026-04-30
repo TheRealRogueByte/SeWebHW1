@@ -6,61 +6,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scrape Recipes - Recipe Recommender</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/steam.css">
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="/"><i class="bi bi-egg-fried me-2"></i>Recipe Recommender</a>
-        <div class="navbar-nav ms-auto">
-            <a class="nav-link" href="/">Home</a>
-            <a class="nav-link" href="/recipes">All Recipes</a>
-            <a class="nav-link" href="/add-recipe">Add Recipe</a>
-            <a class="nav-link active" href="/scrape">Scrape</a>
-        </div>
+<body>
+
+<nav class="st-nav">
+    <div class="st-nav-inner">
+        <a class="st-brand" href="/"><span>&#9673;</span> Recipe Recommender</a>
+        <ul class="st-nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/recipes">Recipes</a></li>
+            <li><a href="/add-recipe">Add Recipe</a></li>
+            <li><a href="/add-user">Add User</a></li>
+            <li><a href="/recommend-skill">Recommend</a></li>
+            <li><a href="/filter-cuisine">By Cuisine</a></li>
+            <li><a href="/xsl-display">XSL View</a></li>
+            <li><a href="/scrape" class="active">Scrape</a></li>
+        </ul>
     </div>
 </nav>
 
-<div class="container my-4">
-    <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow-sm">
-                <div class="card-header" style="background:#8e44ad; color:white;">
-                    <h4 class="mb-0"><i class="bi bi-cloud-download me-2"></i>Scrape Recipes from BBC Good Food</h4>
-                </div>
-                <div class="card-body p-4">
-                    <p class="text-muted">
-                        This will scrape recipe titles from
-                        <strong>bbcgoodfood.com/recipes/collection/budget-autumn</strong>
-                        and add them to the XML database with randomly assigned cuisine types and difficulty levels.
-                    </p>
+<div class="st-wrap">
+    <div style="max-width:600px; margin:0 auto;">
 
-                    <c:if test="${not empty error}">
-                        <div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>${error}</div>
-                    </c:if>
-                    <c:if test="${not empty success}">
-                        <div class="alert alert-success"><i class="bi bi-check-circle me-2"></i>${success}</div>
-                        <c:if test="${not empty scrapedRecipes}">
-                            <ul class="list-group">
-                                <c:forEach var="r" items="${scrapedRecipes}">
-                                    <li class="list-group-item">${r.title} &mdash; <span class="badge bg-secondary">${r.cuisineType1}</span> <span class="badge bg-secondary">${r.cuisineType2}</span> <span class="badge bg-primary">${r.difficultyLevel}</span></li>
-                                </c:forEach>
-                            </ul>
-                        </c:if>
-                    </c:if>
+        <div class="st-page-title">
+            <h2>Scrape Recipes from Web</h2>
+        </div>
 
-                    <form action="/scrape" method="post" class="mt-3">
-                        <button type="submit" class="btn btn-lg w-100" style="background:#8e44ad;color:white;">
-                            <i class="bi bi-cloud-download me-2"></i>Start Scraping
-                        </button>
-                    </form>
-                    <a href="/recipes" class="btn btn-outline-secondary w-100 mt-2">View All Recipes</a>
-                </div>
+        <div class="st-card">
+            <div class="st-card-header">BBC Good Food &mdash; Web Scraper</div>
+            <div class="st-card-body">
+
+                <p style="font-size:12px; color:#8f98a0; line-height:1.6; margin-bottom:14px;">
+                    This will scrape recipe titles from
+                    <strong style="color:#c6d4df;">bbcgoodfood.com/recipes/collection/budget-autumn</strong>
+                    and add them to the XML database with randomly assigned cuisine types and difficulty levels.
+                </p>
+
+                <c:if test="${not empty error}">
+                    <div class="st-alert st-alert-danger">${error}</div>
+                </c:if>
+
+                <c:if test="${not empty success}">
+                    <div class="st-alert st-alert-success">${success}</div>
+                    <c:if test="${not empty scrapedRecipes}">
+                        <div class="st-table-wrap" style="margin-bottom:14px;">
+                            <c:forEach var="r" items="${scrapedRecipes}">
+                                <div class="st-list-item">
+                                    <span>${r.title}</span>
+                                    <span style="display:flex; gap:4px; flex-shrink:0;">
+                                        <span class="st-tag">${r.cuisineType1}</span>
+                                        <span class="st-tag">${r.cuisineType2}</span>
+                                        <c:choose>
+                                            <c:when test="${r.difficultyLevel == 'Beginner'}">
+                                                <span class="st-tag st-tag-green">${r.difficultyLevel}</span>
+                                            </c:when>
+                                            <c:when test="${r.difficultyLevel == 'Intermediate'}">
+                                                <span class="st-tag st-tag-yellow">${r.difficultyLevel}</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="st-tag st-tag-red">${r.difficultyLevel}</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </span>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+                </c:if>
+
+                <form action="/scrape" method="post">
+                    <button type="submit" class="st-btn st-btn-green st-btn-full st-btn-lg">
+                        &#8659; Start Scraping
+                    </button>
+                </form>
+
+            </div>
+            <div class="st-card-footer">
+                <a href="/recipes" class="st-btn st-btn-grey st-btn-sm">View All Recipes</a>
             </div>
         </div>
+
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="st-footer">
+    Recipe Recommender &mdash; Semantic Web Project &bull; XML &bull; XPath &bull; XSL &bull; Java Servlets
+</div>
+
 </body>
 </html>
